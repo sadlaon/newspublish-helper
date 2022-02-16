@@ -1,0 +1,24 @@
+{
+  "name": "NewsPublish Helper",
+  "description": "Copy and paste from Microsoft Word to NewsPublish properly, among others.",
+  "version": "1.0",
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' 'sha256-k2FVBYYCQaTBBKls2W8hFnd/JSWzAY3CP4XWDvuvfHg='; object-src 'self'",
+  "permissions": ["activeTab", "clipboardWrite", "tabs", "webNavigation"],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js", "HtmlSanitizer.js"],
+    "persistent": false
+  },
+  "content_scripts": [{
+    "run_at": "document_end",
+    "all_frames": true,
+    "js": ["content_script.js"]
+  }],
+  "web_accessible_resources": [
+    "onload.js"
+  ]
+}
