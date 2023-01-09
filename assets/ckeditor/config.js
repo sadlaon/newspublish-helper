@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function(config) {
   ];
 
   config.defaultLanguage = 'en';
+  config.enterMode = CKEDITOR.ENTER_DIV;
   config.extraPlugins = 'ajax,button,clipboard,contextmenu,dialogui,dialog,floatpanel,justify,menu,notification,panel,pastefromword,pastetools,sourcearea,tab,table,tableresize,tabletools,toolbar,xml';
   config.height = 200;
   config.language = 'en';

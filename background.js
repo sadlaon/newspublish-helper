@@ -4,6 +4,8 @@
 function inject(script, tabID) {
   'use strict';
 
+  script = script.replace(/[\n\r]/g, '');
+
   var wrapped_script = '(function() {' +
     'var user_data = ' + JSON.stringify(window.user_data) + ';' +
     'var chrome = undefined;' +

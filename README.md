@@ -59,3 +59,10 @@ In `Page Management` and even `Page Tracker` pages, clicking the `id` icon opens
 the hi-res image of the page instead of the `Page Editor` for quick viewing.
 
 ![](screenshots/04.png)
+
+#### Opens the Page Monitoring Log of the page in a new window.
+
+In `Page Management` and even `Page Tracker` pages, clicking the `i` icon opens
+the Page Monitoring Log of the page.
+
+![](screenshots/05.png)

@@ -139,8 +139,27 @@ function hooks() {
     }
   }
 
-  // [Page Management] Clicking the "id" icon opens the page image in a new window.
+  // [Page Management]
   if (typeof phpProductionManagementObj === 'object' && phpProductionManagementObj.translate.action_denied !== "") {
+
+    // Clicking the "i" icon opens the page's monitoring log.
+    $('a[class="infoIcon"]').each(function () {
+      var $this = $(this);
+
+      if ($this.data('events').click === undefined) {
+        $(this).on('click', function (e) {
+          var $next = $(this).next(),
+            base_file_name = $next.attr('original-title'),
+            pma_id = $next.attr('data-pma_id');
+
+          window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          e.preventDefault();
+          return false;
+        });
+      }
+    });
+
+    // Clicking the "id" icon opens the page image in a new window.
     $('a[id^="PAGE_TEMPLATE_FILE_ICON_"]').each(function () {
       var $this = $(this);
 
@@ -156,8 +175,27 @@ function hooks() {
     });
   }
 
-  // [Page Tracker] Clicking the "id" icon opens the page image in a new window.
+  // [Page Tracker]
   if (typeof phpPageTrackerObj === 'object' && phpProductionManagementObj.translate.action_denied === "") {
+
+    // Clicking the "i" icon opens the page's monitoring log.
+    $('a[class="infoIcon"]').each(function () {
+      var $this = $(this);
+
+      if ($this.data('events').click === undefined) {
+        $(this).on('click', function (e) {
+          var $next = $(this).next().next(),
+            base_file_name = $next.attr('original-title'),
+            pma_id = $next.attr('data-pma_id');
+
+          window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          e.preventDefault();
+          return false;
+        });
+      }
+    });
+
+    // Clicking the "id" icon opens the page image in a new window.
     $('a[id^="PAGE_TEMPLATE_FILE_ICON_"]').each(function () {
       var $this = $(this);
 
