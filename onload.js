@@ -25,19 +25,13 @@ if (typeof methods === 'object') {
   if (typeof phpFilterSearchObj === 'object') {
 
     methods.StopRefresh();
-    // phpFilterSearchObj.config.refresh_timer_count = (refresh_grid_minutes * 60);
-    // methods.InitializeAutoRefresh();
-    clearInterval(start_submit_timer);
-    clearInterval(start_display_timer);
-    set_flag = 1;
-    setInterval(methods.ManageSearch, (refresh_grid_minutes * 60) * 1000);
+    phpFilterSearchObj.config.refresh_timer_count = (refresh_grid_minutes * 60);
+    methods.InitializeAutoRefresh();
 
     // [Page Management]
   } else if (typeof phpProductionManagementObj === 'object') {
 
     methods.StopRefresh();
-    // phpProductionManagementObj.config.refresh_timer_count = ${(refresh_grid_minutes * 60)};
-    // methods.IntializeAutoRefresh();
     clearInterval(start_submit_timer);
     clearInterval(start_display_timer);
     set_flag = 1;
@@ -53,8 +47,6 @@ if (typeof methods === 'object') {
       }
     };
 
-    // phpPageTrackerObj.config.refresh_timer_count = ${(refresh_grid_minutes * 60)};
-    // methods.InitializeAutoRefresh();
     clearInterval(start_submit_timer);
     clearInterval(start_display_timer);
     set_flag = 1;
@@ -90,52 +82,56 @@ function hooks() {
     return;
   }
 
-  // [Stories And Media] Clicking a story opens the "view" window.
-  $('.ArticleInfo').each(function () {
-    var $this = $(this);
+  // [Stories And Media]
+  if (typeof phpFilterSearchObj === 'object') {
 
-    if ($this.data('events') === undefined) {
-      $this.on('click', function (e) {
-        var article_id = $(this).data('article_id');
+    // Clicking a story opens the "view" window.
+    $('.ArticleInfo').each(function () {
+      var $this = $(this);
 
-        window.open(phpFilterSearchObj.rootFolderUrl + 'app/manage_articles/manage_articles.php?action=view&id=' + article_id + '&coming_from=article_details');
-        e.preventDefault();
-        return false;
-      });
-    }
-  });
+      if ($this.data('events') === undefined) {
+        $this.on('click', function (e) {
+          var article_id = $(this).data('article_id');
 
-  // [Stories And Media] Sorts the "section" dropdown.
-  var $section = $('#FILTER_SECTION'),
-    sel, options, arr;
+          window.open(phpFilterSearchObj.rootFolderUrl + 'app/manage_articles/manage_articles.php?action=view&id=' + article_id + '&coming_from=article_details');
+          e.preventDefault();
+          return false;
+        });
+      }
+    });
 
-  if ($section.length) {
-    if ($section.data('hooked') === undefined) {
-      $section.data('hooked', 1);
-      sel = $section.val();
+    // [Stories And Media] Sorts the "section" dropdown.
+    var $section = $('#FILTER_SECTION'),
+      sel, options, arr;
 
-      $section.find('option[value="0"]').text('-');
+    if ($section.length) {
+      if ($section.data('hooked') === undefined) {
+        $section.data('hooked', 1);
+        sel = $section.val();
 
-      // @ https://stackoverflow.com/a/12073377
-      options = $section.find('option');
+        $section.find('option[value="0"]').text('-');
 
-      arr = options.map(function (_, o) {
-        return {
-          t: $(o).text(),
-          v: o.value
-        };
-      }).get();
+        // @ https://stackoverflow.com/a/12073377
+        options = $section.find('option');
 
-      arr.sort(function (o1, o2) {
-        return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
-      });
+        arr = options.map(function (_, o) {
+          return {
+            t: $(o).text(),
+            v: o.value
+          };
+        }).get();
 
-      options.each(function (i, o) {
-        o.value = arr[i].v;
-        $(o).text(arr[i].t);
-      });
+        arr.sort(function (o1, o2) {
+          return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
+        });
 
-      $section.val(sel);
+        options.each(function (i, o) {
+          o.value = arr[i].v;
+          $(o).text(arr[i].t);
+        });
+
+        $section.val(sel);
+      }
     }
   }
 
@@ -152,7 +148,10 @@ function hooks() {
             base_file_name = $next.attr('original-title'),
             pma_id = $next.attr('data-pma_id');
 
-          window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          if (base_file_name !== undefined && pma_id !== undefined) {
+            window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          }
+
           e.preventDefault();
           return false;
         });
@@ -184,11 +183,14 @@ function hooks() {
 
       if ($this.data('events').click === undefined) {
         $(this).on('click', function (e) {
-          var $next = $(this).next().next(),
+          var $next = $(this).nextAll('a[data-pma_id]'),
             base_file_name = $next.attr('original-title'),
             pma_id = $next.attr('data-pma_id');
 
-          window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          if (base_file_name !== undefined && pma_id !== undefined) {
+            window.open('../production_management_new/pm_logs.php?file_name=' + base_file_name + '&pma_id=' + pma_id);
+          }
+
           e.preventDefault();
           return false;
         });
